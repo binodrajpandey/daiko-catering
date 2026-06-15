@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: Update sitemap URL with your actual domain
+Sitemap: https://swadcatering.com.np/sitemap.xml
