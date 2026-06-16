@@ -4,14 +4,56 @@ const WHATSAPP_NUMBER = '977980000000'
 const waQuote = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I would like to get a catering quote for my event.')}`
 const waWedding = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I am interested in your wedding catering service.')}`
 const waCorporate = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I am interested in your corporate event catering service.')}`
+const waPicnic = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I am interested in your dry picnic catering service.')}`
+
+// ── Cost calculator ──────────────────────────────────
+const calcType    = ref<'full' | 'half'>('full')
+const calcGuests  = ref(100)
+const calcPackage = ref<'basic' | 'standard' | 'premium'>('standard')
+const calcAddons  = reactive({ extra_main: false, dessert_bar: false, live_cooking: false, beverages: false })
+
+const calcPrices = computed(() => ({
+  basic:    calcType.value === 'half' ? 299 : 499,
+  standard: calcType.value === 'half' ? 349 : 599,
+  premium:  calcType.value === 'half' ? 449 : 799,
+}))
+
+const calcAddonPrices = computed(() => ({
+  extra_main:   calcType.value === 'half' ? 25  : 50,
+  dessert_bar:  calcType.value === 'half' ? 50  : 100,
+  live_cooking: calcType.value === 'half' ? 60  : 120,
+  beverages:    calcType.value === 'half' ? 75  : 150,
+}))
+
+const calcAddonTotal     = computed(() =>
+  (calcAddons.extra_main   ? calcAddonPrices.value.extra_main   : 0) +
+  (calcAddons.dessert_bar  ? calcAddonPrices.value.dessert_bar  : 0) +
+  (calcAddons.live_cooking ? calcAddonPrices.value.live_cooking : 0) +
+  (calcAddons.beverages    ? calcAddonPrices.value.beverages    : 0)
+)
+const calcPricePerPerson = computed(() => calcPrices.value[calcPackage.value] + calcAddonTotal.value)
+const calcTotal          = computed(() => calcGuests.value * calcPricePerPerson.value)
+const calcTotalFormatted = computed(() => calcTotal.value.toLocaleString('en-IN'))
+
+const calcWaMsg = computed(() => {
+  const pkg  = calcPackage.value.charAt(0).toUpperCase() + calcPackage.value.slice(1)
+  const type = calcType.value === 'half' ? 'half catering' : 'full catering'
+  const addons = (Object.entries(calcAddons) as [string, boolean][])
+    .filter(([, v]) => v).map(([k]) => k.replace('_', ' ')).join(', ')
+  return `Hello! I used your cost calculator and got an estimate of NRS ${calcTotalFormatted.value} for ${calcGuests.value} guests (${pkg} package, ${type}${addons ? ', add-ons: ' + addons : ''}). Can you provide an exact quote?`
+})
+
+function clampGuests() {
+  calcGuests.value = Math.min(1000, Math.max(10, calcGuests.value || 10))
+}
 
 useHead({
   title: 'Daiko Catering — Best Catering Service in Kathmandu, Nepal',
   meta: [
-    { name: 'description', content: 'Professional catering service in Kathmandu, Nepal. Authentic Nepali cuisine for weddings, corporate events, birthday parties and social gatherings. From NRS 399/person. Book via WhatsApp.' },
+    { name: 'description', content: 'Professional catering service in Kathmandu, Nepal. Authentic Nepali cuisine for weddings, corporate events, birthday parties and social gatherings. From NRS 499/person. Book via WhatsApp.' },
     { name: 'keywords', content: 'catering service Kathmandu, wedding catering Nepal, event catering Kathmandu, food catering Nepal, Nepali catering, catering company Kathmandu, खानपान सेवा काठमाडौं' },
     { property: 'og:title', content: 'Daiko Catering — Best Catering Service in Kathmandu, Nepal' },
-    { property: 'og:description', content: 'Authentic Nepali cuisine for weddings, corporate events and celebrations. From NRS 399/person. Serving Kathmandu Valley.' },
+    { property: 'og:description', content: 'Authentic Nepali cuisine for weddings, corporate events and celebrations. From NRS 499/person. Serving Kathmandu Valley.' },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://daikocatering.com.np/' },
     { name: 'geo.region', content: 'NP-BA' },
@@ -35,15 +77,15 @@ useHead({
         url: 'https://daikocatering.com.np',
         telephone: '+977-98XXXXXXXX',
         servesCuisine: ['Nepali', 'Indian', 'Continental'],
-        priceRange: 'NRS 399 - NRS 699 per person',
+        priceRange: 'NRS 499 - NRS 799 per person',
         areaServed: { '@type': 'City', name: 'Kathmandu' },
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
           name: 'Catering Packages',
           itemListElement: [
-            { '@type': 'Offer', name: 'Basic Package', price: '399', priceCurrency: 'NPR', description: 'Perfect for small gatherings' },
-            { '@type': 'Offer', name: 'Standard Package', price: '499', priceCurrency: 'NPR', description: 'Our most popular wedding & event package' },
-            { '@type': 'Offer', name: 'Premium Package', price: '699', priceCurrency: 'NPR', description: 'The complete experience for prestigious events' },
+            { '@type': 'Offer', name: 'Basic Package', price: '499', priceCurrency: 'NPR', description: 'Perfect for small gatherings' },
+            { '@type': 'Offer', name: 'Standard Package', price: '599', priceCurrency: 'NPR', description: 'Our most popular wedding & event package' },
+            { '@type': 'Offer', name: 'Premium Package', price: '799', priceCurrency: 'NPR', description: 'The complete experience for prestigious events' },
           ],
         },
         aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '120' },
@@ -98,27 +140,18 @@ useHead({
           </div>
         </div>
 
-        <div class="hero-art" aria-hidden="true">
-          <div class="art-circle" />
-          <div class="dishes">
-            <div class="dish dish-1">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 11l19-9-9 19-2-8-8-2z"/>
-              </svg>
-              <span>Dal Bhat</span>
-            </div>
-            <div class="dish dish-2">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
-              </svg>
-              <span>Momo</span>
-            </div>
-            <div class="dish dish-3">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 3"/>
-              </svg>
-              <span>Sweets</span>
-            </div>
+        <div class="hero-img-wrap" aria-hidden="true">
+          <div class="hero-img-glow" />
+          <div class="hero-img-frame">
+            <img src="/images/dal-bhat.jpg" alt="Dal Bhat Thali" class="hero-food-img" />
+          </div>
+          <div class="hero-float-badge badge-top">
+            <strong>4.9★</strong>
+            <span>Google Rating</span>
+          </div>
+          <div class="hero-float-badge badge-bottom">
+            <strong>500+</strong>
+            <span>Events Catered</span>
           </div>
         </div>
       </div>
@@ -172,6 +205,311 @@ useHead({
             <p>Bratabandha, pasni, anniversaries, puja events — we understand the cultural significance and deliver food that honours every tradition.</p>
             <span class="event-cta">View packages →</span>
           </NuxtLink>
+
+          <a :href="waPicnic" target="_blank" rel="noopener noreferrer" class="event-card event-picnic">
+            <div class="event-icon">🧺</div>
+            <h3>Dry Picnic</h3>
+            <p>We travel to your picnic location and cook fresh on-site — school trips, corporate outings, family picnics. You enjoy the outdoors; we handle all the food.</p>
+            <span class="event-cta">Get picnic quote →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Food menu ─────────────────────────────────── -->
+    <section class="section section-alt">
+      <div class="inner">
+        <div class="section-label">Our Food</div>
+        <h2 class="section-heading">What's on the Menu</h2>
+        <p class="section-sub">Authentic Nepali and fusion dishes prepared fresh for every event. All items can be customised per package.</p>
+
+        <div class="food-grid">
+          <div class="food-cat">
+            <div class="food-cat-head">
+              <span class="food-emoji">🍚</span>
+              <h3>Rice & Breads</h3>
+            </div>
+            <ul>
+              <li>Steamed Rice</li>
+              <li>Jeera Rice</li>
+              <li>Fried Rice</li>
+              <li>Roti / Chapati</li>
+              <li>Bhatura</li>
+              <li>Puri</li>
+            </ul>
+          </div>
+
+          <div class="food-cat">
+            <div class="food-cat-head">
+              <span class="food-emoji">🍲</span>
+              <h3>Dal & Curries</h3>
+            </div>
+            <ul>
+              <li>Dal Bhat</li>
+              <li>Dal Tadka</li>
+              <li>Dal Makhani</li>
+              <li>Aloo Gobi</li>
+              <li>Mixed Veg Curry</li>
+              <li>Mushroom Tarkari</li>
+            </ul>
+          </div>
+
+          <div class="food-cat">
+            <div class="food-cat-head">
+              <span class="food-emoji">🍗</span>
+              <h3>Protein Dishes</h3>
+            </div>
+            <ul>
+              <li>Chicken Curry</li>
+              <li>Mutton Curry</li>
+              <li>Fish Curry</li>
+              <li>Egg Curry</li>
+              <li>Paneer Butter Masala</li>
+              <li>Soya Tarkari</li>
+            </ul>
+          </div>
+
+          <div class="food-cat">
+            <div class="food-cat-head">
+              <span class="food-emoji">🥟</span>
+              <h3>Snacks & Starters</h3>
+            </div>
+            <ul>
+              <li>Steam Momo</li>
+              <li>Fried Momo</li>
+              <li>Samosa</li>
+              <li>Pakoda</li>
+              <li>Chowmein</li>
+              <li>Sadeko (spiced salad)</li>
+            </ul>
+          </div>
+
+          <div class="food-cat">
+            <div class="food-cat-head">
+              <span class="food-emoji">🍮</span>
+              <h3>Desserts</h3>
+            </div>
+            <ul>
+              <li>Kheer</li>
+              <li>Gulab Jamun</li>
+              <li>Rasgulla</li>
+              <li>Jalebi</li>
+              <li>Fruit Salad</li>
+              <li>Halwa</li>
+            </ul>
+          </div>
+
+          <div class="food-cat">
+            <div class="food-cat-head">
+              <span class="food-emoji">🥤</span>
+              <h3>Drinks</h3>
+            </div>
+            <ul>
+              <li>Soft Drinks</li>
+              <li>Fresh Juice</li>
+              <li>Lassi</li>
+              <li>Masala Tea</li>
+              <li>Mineral Water</li>
+              <li>Mango Shakes</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="food-cta">
+          <NuxtLink to="/menu" class="food-cta-link">See full packages & pricing →</NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Pricing teaser ────────────────────────────── -->
+    <section class="section">
+      <div class="inner">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-heading">Simple, transparent pricing</h2>
+        <p class="section-sub">All packages include setup, service, and cleanup. No hidden charges — ever.</p>
+
+        <div class="price-grid">
+          <div class="price-card">
+            <div class="price-tier">Basic</div>
+            <div class="price-amount">NRS 499<span>/person</span></div>
+            <p class="price-desc">Ideal for small gatherings and simple events up to 100 guests.</p>
+            <ul class="price-items">
+              <li>Steamed rice & 2 veg curries</li>
+              <li>Dal, pickle & papadum</li>
+              <li>Light dessert & soft drinks</li>
+            </ul>
+            <NuxtLink to="/menu" class="price-link">View full details →</NuxtLink>
+          </div>
+
+          <div class="price-card price-popular">
+            <div class="popular-badge">Most Popular</div>
+            <div class="price-tier popular-tier">Standard</div>
+            <div class="price-amount">NRS 599<span>/person</span></div>
+            <p class="price-desc">Our most-loved package for weddings and major events.</p>
+            <ul class="price-items">
+              <li>Rice + roti or bhatura</li>
+              <li>2 veg + 1 protein dish</li>
+              <li>Dal tadka, salad & dessert</li>
+            </ul>
+            <NuxtLink to="/menu" class="price-link price-link-pop">View full details →</NuxtLink>
+          </div>
+
+          <div class="price-card">
+            <div class="price-tier">Premium</div>
+            <div class="price-amount">NRS 799<span>/person</span></div>
+            <p class="price-desc">The complete experience for prestigious and large-scale events.</p>
+            <ul class="price-items">
+              <li>Rice + bhatura & roti</li>
+              <li>3 veg + 2 protein dishes</li>
+              <li>Soup bar, salad & 2 desserts</li>
+            </ul>
+            <NuxtLink to="/menu" class="price-link">View full details →</NuxtLink>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Cost calculator ──────────────────────────── -->
+    <section class="section section-alt">
+      <div class="inner">
+        <div class="section-label">Calculator</div>
+        <h2 class="section-heading">Estimate your catering cost</h2>
+        <p class="section-sub">Adjust the options to get an instant estimate. Prices update in real time.</p>
+
+        <div class="calc-wrap">
+
+          <!-- Inputs -->
+          <div class="calc-inputs">
+
+            <!-- Type toggle -->
+            <div class="calc-group">
+              <div class="calc-label">Catering Type</div>
+              <div class="calc-type-row">
+                <button class="calc-type-btn" :class="{ active: calcType === 'full' }" @click="calcType = 'full'">
+                  <strong>Full Catering</strong>
+                  <span>We supply everything</span>
+                </button>
+                <button class="calc-type-btn" :class="{ active: calcType === 'half' }" @click="calcType = 'half'">
+                  <strong>Half Catering</strong>
+                  <span>You supply ingredients</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Guest count -->
+            <div class="calc-group">
+              <div class="calc-label">Number of Guests</div>
+              <div class="calc-guest-row">
+                <button class="calc-step" @click="calcGuests = Math.max(10, calcGuests - 10)">−</button>
+                <input
+                  type="number"
+                  v-model.number="calcGuests"
+                  min="10" max="1000"
+                  class="calc-guest-input"
+                  @change="clampGuests"
+                />
+                <button class="calc-step" @click="calcGuests = Math.min(1000, calcGuests + 10)">+</button>
+              </div>
+              <input type="range" v-model.number="calcGuests" min="10" max="1000" step="10" class="calc-slider" />
+              <div class="calc-slider-labels"><span>10</span><span>500</span><span>1,000</span></div>
+            </div>
+
+            <!-- Package -->
+            <div class="calc-group">
+              <div class="calc-label">Package</div>
+              <div class="calc-pkgs">
+                <label class="calc-pkg-btn" :class="{ selected: calcPackage === 'basic' }">
+                  <input type="radio" v-model="calcPackage" value="basic" />
+                  <span class="cpkg-name">Basic</span>
+                  <span class="cpkg-price">NRS {{ calcPrices.basic }}</span>
+                </label>
+                <label class="calc-pkg-btn" :class="{ selected: calcPackage === 'standard' }">
+                  <input type="radio" v-model="calcPackage" value="standard" />
+                  <span class="cpkg-name">Standard <em>Popular</em></span>
+                  <span class="cpkg-price">NRS {{ calcPrices.standard }}</span>
+                </label>
+                <label class="calc-pkg-btn" :class="{ selected: calcPackage === 'premium' }">
+                  <input type="radio" v-model="calcPackage" value="premium" />
+                  <span class="cpkg-name">Premium</span>
+                  <span class="cpkg-price">NRS {{ calcPrices.premium }}</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Add-ons -->
+            <div class="calc-group">
+              <div class="calc-label">Add-ons <span class="calc-label-opt">optional</span></div>
+              <div class="calc-addons">
+                <label class="calc-addon" :class="{ selected: calcAddons.extra_main }">
+                  <input type="checkbox" v-model="calcAddons.extra_main" />
+                  <span>Extra Main Dish</span>
+                  <span class="addon-tag">+NRS {{ calcAddonPrices.extra_main }}/person</span>
+                </label>
+                <label class="calc-addon" :class="{ selected: calcAddons.dessert_bar }">
+                  <input type="checkbox" v-model="calcAddons.dessert_bar" />
+                  <span>Dessert Bar</span>
+                  <span class="addon-tag">+NRS {{ calcAddonPrices.dessert_bar }}/person</span>
+                </label>
+                <label class="calc-addon" :class="{ selected: calcAddons.live_cooking }">
+                  <input type="checkbox" v-model="calcAddons.live_cooking" />
+                  <span>Live Cooking Station</span>
+                  <span class="addon-tag">+NRS {{ calcAddonPrices.live_cooking }}/person</span>
+                </label>
+                <label class="calc-addon" :class="{ selected: calcAddons.beverages }">
+                  <input type="checkbox" v-model="calcAddons.beverages" />
+                  <span>Premium Beverages</span>
+                  <span class="addon-tag">+NRS {{ calcAddonPrices.beverages }}/person</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Result -->
+          <div class="calc-result">
+            <div class="result-card">
+              <div class="result-eyebrow">Estimated Total</div>
+              <div class="result-amount">NRS {{ calcTotalFormatted }}</div>
+              <div class="result-breakdown">
+                {{ calcGuests }} guests × NRS {{ calcPricePerPerson }}/person
+              </div>
+              <div v-if="calcAddonTotal > 0" class="result-addons-note">
+                Includes NRS {{ calcAddonTotal }}/person in add-ons
+              </div>
+              <div class="result-divider" />
+              <ul class="result-summary">
+                <li>
+                  <span>Package</span>
+                  <strong>{{ calcPackage.charAt(0).toUpperCase() + calcPackage.slice(1) }} ({{ calcType === 'half' ? 'Half' : 'Full' }})</strong>
+                </li>
+                <li>
+                  <span>Price/person</span>
+                  <strong>NRS {{ calcPrices[calcPackage] }}</strong>
+                </li>
+                <li v-if="calcAddonTotal > 0">
+                  <span>Add-ons/person</span>
+                  <strong>+NRS {{ calcAddonTotal }}</strong>
+                </li>
+                <li>
+                  <span>Guests</span>
+                  <strong>{{ calcGuests }}</strong>
+                </li>
+              </ul>
+              <div class="result-divider" />
+              <p class="result-note">Actual price may vary by location and requirements.</p>
+              <a
+                :href="`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(calcWaMsg)}`"
+                target="_blank" rel="noopener noreferrer"
+                class="result-btn"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.43 12.38c-.23.64-.67 1.17-1.23 1.51-.38.23-.8.35-1.23.35-.24 0-.49-.03-.73-.1-.94-.26-1.84-.73-2.62-1.38-.72-.6-1.33-1.32-1.79-2.12-.28-.49-.44-1.01-.46-1.54-.02-.55.14-1.1.48-1.54.24-.31.55-.48.89-.48h.25c.2 0 .4.01.57.4.21.48.67 1.6.73 1.72.06.12.1.26.03.41-.07.15-.11.24-.22.37-.11.13-.23.29-.33.39-.11.11-.22.23-.1.45.13.22.57.94 1.22 1.52.84.75 1.55.98 1.77 1.09.22.11.35.09.48-.05.13-.14.55-.64.7-.86.15-.22.29-.18.49-.11.2.07 1.27.6 1.49.71.22.11.37.16.42.25.06.09.06.52-.17 1.02z"/>
+                </svg>
+                Get Exact Quote on WhatsApp
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -477,50 +815,78 @@ useHead({
   transform: translateY(-1px);
 }
 
-/* ── Hero art ──────────────────────────────────────── */
-.hero-art {
+/* ── Hero image ────────────────────────────────────── */
+.hero-img-wrap {
   position: relative;
-  width: 280px;
-  height: 280px;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 360px;
+  height: 380px;
 }
 
-.art-circle {
+.hero-img-glow {
   position: absolute;
-  width: 260px;
-  height: 260px;
+  inset: -30px;
+  background: radial-gradient(circle at center, rgba(249,115,22,0.18) 0%, transparent 65%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, rgba(249,115,22,0) 70%);
-  border: 1.5px dashed rgba(249,115,22,0.2);
+  pointer-events: none;
 }
 
-.dishes {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-  position: relative;
-  z-index: 1;
+.hero-img-frame {
+  position: absolute;
+  top: 24px;
+  left: 16px;
+  right: 16px;
+  bottom: 24px;
+  border-radius: 2rem;
+  overflow: hidden;
+  border: 4px solid #fff;
+  box-shadow: 0 24px 64px rgba(249,115,22,0.2), 0 4px 20px rgba(0,0,0,0.1);
+  transform: rotate(2deg);
 }
 
-.dish {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.hero-food-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: rotate(-2deg) scale(1.07);
+  transition: transform 0.5s ease;
+}
+
+.hero-img-frame:hover .hero-food-img {
+  transform: rotate(-2deg) scale(1.13);
+}
+
+.hero-float-badge {
+  position: absolute;
   background: #fff;
   border: 1.5px solid #fed7aa;
   border-radius: 1rem;
-  padding: 0.75rem 1.25rem;
-  box-shadow: 0 4px 16px rgba(249,115,22,0.1);
+  padding: 0.65rem 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  z-index: 2;
+  text-align: center;
+  min-width: 110px;
 }
 
-.dish span { font-weight: 700; color: #0f172a; font-size: 0.9rem; }
-.dish-1 { transform: translateX(-20px); }
-.dish-2 { transform: translateX(20px); }
-.dish-3 { transform: translateX(-10px); }
+.hero-float-badge strong {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #f97316;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.hero-float-badge span {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.badge-top { top: 4px; right: -4px; }
+.badge-bottom { bottom: 16px; left: -4px; }
 
 /* ── Stats bar ─────────────────────────────────────── */
 .stats-bar { background: #0f172a; }
@@ -542,7 +908,7 @@ useHead({
 /* ── Event cards ───────────────────────────────────── */
 .event-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
@@ -565,6 +931,7 @@ useHead({
 .event-corporate { border-top: 3px solid #0891b2; }
 .event-birthday { border-top: 3px solid #7c3aed; }
 .event-social { border-top: 3px solid #059669; }
+.event-picnic { border-top: 3px solid #d97706; }
 
 .event-icon { font-size: 2rem; margin-bottom: 1rem; }
 
@@ -768,6 +1135,493 @@ useHead({
 
 .cta-link:hover { color: #fff; }
 
+/* ── Food menu ─────────────────────────────────────── */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.food-cat {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-top: 3px solid #f97316;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+}
+
+.food-cat-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.food-emoji { font-size: 1.5rem; }
+
+.food-cat h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.food-cat ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.food-cat ul li {
+  font-size: 0.875rem;
+  color: #475569;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.food-cat ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  background: #f97316;
+  border-radius: 50%;
+}
+
+.food-cta {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.food-cta-link {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ea580c;
+  border: 2px solid #f97316;
+  border-radius: 2rem;
+  padding: 0.65rem 1.75rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.food-cta-link:hover {
+  background: #f97316;
+  color: #fff;
+}
+
+/* ── Pricing teaser ────────────────────────────────── */
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.price-card {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.09);
+}
+
+.price-popular {
+  background: #fff;
+  border-color: #f97316;
+  box-shadow: 0 8px 32px rgba(249,115,22,0.14);
+  transform: scale(1.03);
+}
+
+.price-popular:hover {
+  transform: scale(1.03) translateY(-4px);
+  box-shadow: 0 16px 48px rgba(249,115,22,0.2);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.3rem 1rem;
+  border-radius: 2rem;
+  white-space: nowrap;
+}
+
+.price-tier {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+}
+
+.popular-tier { color: #f97316; }
+
+.price-amount {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.price-amount span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #94a3b8;
+  letter-spacing: 0;
+}
+
+.price-desc {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+.price-items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.price-items li {
+  font-size: 0.875rem;
+  color: #475569;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.price-items li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  background: #f97316;
+  border-radius: 50%;
+}
+
+.price-link {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #64748b;
+  transition: color 0.15s;
+}
+
+.price-link:hover { color: #f97316; }
+.price-link-pop { color: #ea580c; }
+.price-link-pop:hover { color: #c2410c; }
+
+/* ── Cost calculator ───────────────────────────────── */
+.calc-wrap {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.calc-inputs { display: flex; flex-direction: column; gap: 1.75rem; }
+
+.calc-group { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.calc-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.calc-label-opt {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: none;
+  letter-spacing: 0;
+  background: #f1f5f9;
+  padding: 0.1rem 0.5rem;
+  border-radius: 1rem;
+}
+
+.calc-type-row { display: flex; gap: 0.75rem; }
+
+.calc-type-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.85rem 1.1rem;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  text-align: left;
+}
+
+.calc-type-btn strong { font-size: 0.875rem; font-weight: 700; color: #0f172a; }
+.calc-type-btn span { font-size: 0.75rem; color: #94a3b8; }
+
+.calc-type-btn.active {
+  border-color: #f97316;
+  background: #fff7ed;
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.12);
+}
+
+.calc-type-btn.active strong { color: #ea580c; }
+
+.calc-guest-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.calc-step {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.calc-step:hover { border-color: #f97316; color: #f97316; background: #fff7ed; }
+
+.calc-guest-input {
+  width: 100px;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.calc-guest-input:focus { border-color: #f97316; }
+.calc-guest-input::-webkit-inner-spin-button,
+.calc-guest-input::-webkit-outer-spin-button { opacity: 1; }
+
+.calc-slider {
+  width: 100%;
+  accent-color: #f97316;
+  cursor: pointer;
+  height: 4px;
+  margin-top: 0.25rem;
+}
+
+.calc-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
+.calc-pkgs { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.calc-pkg-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.1rem;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.calc-pkg-btn input[type="radio"] { accent-color: #f97316; }
+
+.calc-pkg-btn.selected {
+  border-color: #f97316;
+  background: #fff7ed;
+}
+
+.cpkg-name {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cpkg-name em {
+  font-style: normal;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: #f97316;
+  color: #fff;
+  padding: 0.1rem 0.45rem;
+  border-radius: 1rem;
+  margin-left: 0.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.cpkg-price {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #f97316;
+}
+
+.calc-addons { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.calc-addon {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  font-size: 0.875rem;
+  color: #334155;
+}
+
+.calc-addon input[type="checkbox"] { accent-color: #f97316; width: 15px; height: 15px; flex-shrink: 0; }
+.calc-addon span:nth-child(2) { flex: 1; font-weight: 600; }
+.calc-addon.selected { border-color: #f97316; background: #fff7ed; }
+
+.addon-tag {
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: #f97316;
+  white-space: nowrap;
+}
+
+/* Result card */
+.calc-result { position: sticky; top: 5rem; }
+
+.result-card {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+}
+
+.result-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #f97316;
+  margin-bottom: 0.5rem;
+}
+
+.result-amount {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.result-breakdown {
+  font-size: 0.825rem;
+  color: #64748b;
+  margin-bottom: 0.3rem;
+}
+
+.result-addons-note {
+  font-size: 0.775rem;
+  color: #94a3b8;
+  margin-bottom: 0.3rem;
+}
+
+.result-divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 1.1rem 0;
+}
+
+.result-summary {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.result-summary li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.825rem;
+}
+
+.result-summary li span { color: #94a3b8; }
+.result-summary li strong { color: #0f172a; font-weight: 700; }
+
+.result-note {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.result-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: #fff;
+  border-radius: 0.875rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.result-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+
 /* ── Responsive ────────────────────────────────────── */
 @media (max-width: 900px) {
   .hero { padding: 3.5rem 1.5rem; }
@@ -776,15 +1630,21 @@ useHead({
   .hero-stats { justify-content: center; }
   .hero-sub { max-width: 100%; }
   .hero-btns { justify-content: center; }
-  .hero-art { display: none; }
+  .hero-img-wrap { display: none; }
   .stats-inner { flex-wrap: wrap; }
   .stat-item { flex: 1 1 45%; padding: 1.25rem; }
   .stat-rule { display: none; }
-  .event-grid { grid-template-columns: 1fr; }
+  .event-grid { grid-template-columns: 1fr 1fr; }
   .feature-grid { grid-template-columns: 1fr 1fr; }
   .steps { flex-direction: column; gap: 1rem; }
   .step-line { width: 2px; height: 1.5rem; background: repeating-linear-gradient(180deg, #e2e8f0 0, #e2e8f0 6px, transparent 6px, transparent 12px); margin: 0 0 0 1.5rem; }
   .review-grid { grid-template-columns: 1fr; }
+  .food-grid { grid-template-columns: 1fr 1fr; }
+  .price-grid { grid-template-columns: 1fr; }
+  .price-popular { transform: none; }
+  .price-popular:hover { transform: translateY(-4px); }
+  .calc-wrap { grid-template-columns: 1fr; }
+  .calc-result { position: static; }
 }
 
 @media (max-width: 480px) {
@@ -792,5 +1652,7 @@ useHead({
   .event-grid { grid-template-columns: 1fr; }
   .stat-item { flex: 1 1 100%; }
   .step-line { display: none; }
+  .food-grid { grid-template-columns: 1fr; }
+  .price-grid { grid-template-columns: 1fr; }
 }
 </style>

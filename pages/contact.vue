@@ -5,6 +5,7 @@ const waGeneral = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('H
 const waWedding = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I am looking for wedding catering in Kathmandu.')}`
 const waCorporate = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I need catering for a corporate event in Kathmandu.')}`
 const waEvent = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I need catering for a social event.')}`
+const waPicnic = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I am interested in your dry picnic catering service.')}`
 
 const faqs = [
   {
@@ -87,6 +88,13 @@ useHead({
             <span class="book-emoji">🎉</span>
             <h3>Social / Family Event</h3>
             <p>Birthday, bratabandha, pasni, anniversary</p>
+            <span class="book-wa">Open in WhatsApp →</span>
+          </a>
+
+          <a :href="waPicnic" target="_blank" rel="noopener noreferrer" class="book-card book-picnic">
+            <span class="book-emoji">🧺</span>
+            <h3>Dry Picnic</h3>
+            <p>We cook fresh on-site at your picnic location — school trips, outings & family picnics</p>
             <span class="book-wa">Open in WhatsApp →</span>
           </a>
 
@@ -242,6 +250,7 @@ useHead({
 .book-wedding { border-top: 3px solid #f97316; }
 .book-corporate { border-top: 3px solid #0891b2; }
 .book-social { border-top: 3px solid #7c3aed; }
+.book-picnic { border-top: 3px solid #d97706; }
 .book-general { border-top: 3px solid #059669; }
 
 .book-emoji { font-size: 2rem; display: block; margin-bottom: 0.75rem; }

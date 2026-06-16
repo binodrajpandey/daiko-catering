@@ -2,7 +2,7 @@
 const WHATSAPP_NUMBER = '977980000000'
 const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I saw your gallery and would like to book catering for my event.')}`
 
-const categories = ['All', 'Weddings', 'Corporate', 'Birthday', 'Social']
+const categories = ['All', 'Weddings', 'Corporate', 'Birthday', 'Social', 'Picnic']
 const activeCategory = ref('All')
 
 const items = [
@@ -18,6 +18,9 @@ const items = [
   { id: 10, label: 'Conference Catering', category: 'Corporate', guests: '200 guests', color: '', bg: 'linear-gradient(135deg, #475569, #334155)', emoji: '🎤' },
   { id: 11, label: 'Anniversary Dinner', category: 'Social', guests: '70 guests', color: '', bg: 'linear-gradient(135deg, #f97316, #fb923c)', emoji: '❤️' },
   { id: 12, label: 'Kids Birthday', category: 'Birthday', guests: '35 guests', color: '', bg: 'linear-gradient(135deg, #ec4899, #f97316)', emoji: '🎈' },
+  { id: 13, label: 'School Trip Picnic', category: 'Picnic', guests: '80 guests', color: '', bg: 'linear-gradient(135deg, #d97706, #b45309)', emoji: '🧺' },
+  { id: 14, label: 'Corporate Outing', category: 'Picnic', guests: '60 guests', color: '', bg: 'linear-gradient(135deg, #65a30d, #4d7c0f)', emoji: '🏕️' },
+  { id: 15, label: 'Family Picnic', category: 'Picnic', guests: '40 guests', color: '', bg: 'linear-gradient(135deg, #0891b2, #d97706)', emoji: '👨‍👩‍👧‍👦' },
 ]
 
 const filtered = computed(() =>

@@ -6,9 +6,9 @@ const cateringType = ref<CateringType>('full')
 const isHalf = computed(() => cateringType.value === 'half')
 
 const prices = computed(() => ({
-  basic:    isHalf.value ? 199 : 399,
-  standard: isHalf.value ? 249 : 499,
-  premium:  isHalf.value ? 349 : 699,
+  basic:    isHalf.value ? 299 : 499,
+  standard: isHalf.value ? 349 : 599,
+  premium:  isHalf.value ? 449 : 799,
 }))
 
 const addonPrices = computed(() => ({
@@ -29,10 +29,10 @@ const waGeneral = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('H
 useHead({
   title: 'Catering Menu & Packages — Daiko Catering Kathmandu',
   meta: [
-    { name: 'description', content: 'View our catering packages for events in Kathmandu. Basic from NRS 399/person, Standard NRS 499, Premium NRS 699. Full catering and half catering options. Weddings, corporate events, parties.' },
+    { name: 'description', content: 'View our catering packages for events in Kathmandu. Basic from NRS 499/person, Standard NRS 599, Premium NRS 799. Full catering and half catering options. Weddings, corporate events, parties.' },
     { name: 'keywords', content: 'catering packages Kathmandu, wedding catering menu Nepal, catering price Nepal, catering cost Kathmandu, dal bhat catering, buffet catering Nepal' },
     { property: 'og:title', content: 'Menu & Catering Packages — Daiko Catering Kathmandu' },
-    { property: 'og:description', content: 'Full & half catering packages from NRS 399/person. Authentic Nepali cuisine for any event in Kathmandu.' },
+    { property: 'og:description', content: 'Full & half catering packages from NRS 499/person. Authentic Nepali cuisine for any event in Kathmandu.' },
     { property: 'og:url', content: 'https://daikocatering.com.np/menu' },
   ],
   link: [{ rel: 'canonical', href: 'https://daikocatering.com.np/menu' }],
@@ -226,6 +226,46 @@ useHead({
       </div>
     </section>
 
+    <!-- ── Dry Picnic ────────────────────────────── -->
+    <section class="section section-alt">
+      <div class="inner">
+        <div class="section-label">Dry Picnic</div>
+        <h2 class="section-heading">On-Site Picnic Catering</h2>
+        <p class="section-sub">We travel to your picnic location and cook fresh on-site. You pick the spot — we bring the chefs, equipment, ingredients, and staff. Perfect for school trips, corporate outings, and family picnics.</p>
+
+        <div class="picnic-how">
+          <div class="picnic-step">
+            <span class="picnic-num">1</span>
+            <div><strong>You choose the location</strong><p>Any outdoor venue in or around Kathmandu Valley — park, riverside, resort, or open ground.</p></div>
+          </div>
+          <div class="picnic-step">
+            <span class="picnic-num">2</span>
+            <div><strong>We arrive fully equipped</strong><p>Our team brings chefs, portable stoves, utensils, ingredients, and serving equipment — nothing for you to arrange.</p></div>
+          </div>
+          <div class="picnic-step">
+            <span class="picnic-num">3</span>
+            <div><strong>Fresh food cooked on-site</strong><p>Hot, freshly cooked Nepali and snack-style food served directly to your group at the picnic spot.</p></div>
+          </div>
+        </div>
+
+        <div class="picnic-pkg-note">
+          <div class="picnic-pkg-icon">🧺</div>
+          <div>
+            <p>Dry picnic catering uses the same <strong>Basic, Standard, and Premium packages</strong> listed above — just cooked and served fresh at your outdoor location.</p>
+            <p>Browse the packages above to choose the right one, then mention it's a dry picnic when you book.</p>
+          </div>
+          <a :href="`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I would like to book dry picnic catering. Please help me choose the right package.')}`" target="_blank" rel="noopener noreferrer" class="picnic-pkg-btn">
+            Book a Picnic on WhatsApp →
+          </a>
+        </div>
+
+        <div class="picnic-note">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p>Minimum 20 guests. Travel within Kathmandu Valley included. Outside valley available by quote. Menu can be customised — <a :href="`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I would like to discuss a custom dry picnic package.')}`" target="_blank" rel="noopener noreferrer">chat with us on WhatsApp</a>.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- ── CTA ────────────────────────────────────── -->
     <section class="cta-strip">
       <div class="cta-content">
@@ -376,6 +416,49 @@ useHead({
 .fees-table td { padding: 0.9rem 1.25rem; font-size: 0.9rem; color: #334155; }
 .fee-val { text-align: right; font-weight: 700; color: #f97316; }
 .fee-free { color: #16a34a; }
+
+/* Picnic how-it-works */
+.picnic-how { display: flex; flex-direction: column; gap: 1rem; max-width: 680px; margin-bottom: 0.5rem; }
+.picnic-step { display: flex; align-items: flex-start; gap: 1rem; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 1rem; padding: 1.25rem 1.5rem; }
+.picnic-num { width: 32px; height: 32px; background: linear-gradient(135deg, #d97706, #b45309); color: #fff; font-size: 0.9rem; font-weight: 900; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.picnic-step strong { display: block; font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 0.25rem; }
+.picnic-step p { font-size: 0.875rem; color: #64748b; line-height: 1.55; margin: 0; }
+
+/* Picnic note */
+.picnic-pkg-note {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 1.25rem;
+  padding: 1.75rem 2rem;
+  flex-wrap: wrap;
+}
+.picnic-pkg-icon { font-size: 2.5rem; flex-shrink: 0; }
+.picnic-pkg-note > div { flex: 1; min-width: 200px; }
+.picnic-pkg-note p { font-size: 0.9rem; color: #475569; line-height: 1.65; margin: 0 0 0.4rem; }
+.picnic-pkg-note p:last-child { margin: 0; }
+.picnic-pkg-note strong { color: #0f172a; }
+.picnic-pkg-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: #f97316;
+  color: #fff;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.picnic-pkg-btn:hover { background: #ea580c; }
+
+.picnic-note { display: flex; align-items: flex-start; gap: 0.75rem; margin-top: 2rem; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 1rem; padding: 1rem 1.25rem; }
+.picnic-note svg { flex-shrink: 0; margin-top: 1px; }
+.picnic-note p { font-size: 0.875rem; color: #713f12; line-height: 1.6; margin: 0; }
+.picnic-note a { color: #d97706; font-weight: 600; }
 
 /* CTA */
 .cta-strip { background: linear-gradient(135deg, #c2410c 0%, #f97316 50%, #fb923c 100%); padding: 4rem 2rem; text-align: center; }
