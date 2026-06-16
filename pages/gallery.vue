@@ -25,10 +25,10 @@ const filtered = computed(() =>
 )
 
 useHead({
-  title: 'Gallery — Swad Catering Kathmandu Events',
+  title: 'Gallery — Daiko Catering Kathmandu Events',
   meta: [
     { name: 'description', content: 'See our catering work in Kathmandu — weddings, corporate events, birthday parties, and social ceremonies. Professional catering across the Kathmandu Valley.' },
-    { property: 'og:title', content: 'Gallery — Swad Catering Kathmandu' },
+    { property: 'og:title', content: 'Gallery — Daiko Catering Kathmandu' },
     { property: 'og:description', content: 'View our event catering gallery from Kathmandu. Weddings, corporate events, parties and more.' },
   ],
 })
@@ -91,7 +91,7 @@ useHead({
     <section class="cta-strip">
       <div class="cta-content">
         <h3>Want your event to be our next showcase?</h3>
-        <p>Book Swad Catering for your Kathmandu event and let us create something memorable.</p>
+        <p>Book Daiko Catering for your Kathmandu event and let us create something memorable.</p>
         <a :href="waUrl" target="_blank" rel="noopener noreferrer" class="cta-btn">
           Book via WhatsApp
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>

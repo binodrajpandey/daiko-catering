@@ -27,11 +27,11 @@ function waBook(pkg: string, price: number) {
 const waGeneral = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I would like to discuss a custom catering package.')}`
 
 useHead({
-  title: 'Catering Menu & Packages — Swad Catering Kathmandu',
+  title: 'Catering Menu & Packages — Daiko Catering Kathmandu',
   meta: [
     { name: 'description', content: 'View our catering packages for events in Kathmandu. Basic from NRS 399/person, Standard NRS 499, Premium NRS 699. Full catering and half catering options. Weddings, corporate events, parties.' },
     { name: 'keywords', content: 'catering packages Kathmandu, wedding catering menu Nepal, catering price Nepal, catering cost Kathmandu, dal bhat catering, buffet catering Nepal' },
-    { property: 'og:title', content: 'Menu & Catering Packages — Swad Catering Kathmandu' },
+    { property: 'og:title', content: 'Menu & Catering Packages — Daiko Catering Kathmandu' },
     { property: 'og:description', content: 'Full & half catering packages from NRS 399/person. Authentic Nepali cuisine for any event in Kathmandu.' },
   ],
 })

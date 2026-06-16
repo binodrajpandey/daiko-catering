@@ -6,11 +6,11 @@ const waWedding = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('H
 const waCorporate = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I am interested in your corporate event catering service.')}`
 
 useHead({
-  title: 'Swad Catering — Best Catering Service in Kathmandu, Nepal',
+  title: 'Daiko Catering — Best Catering Service in Kathmandu, Nepal',
   meta: [
     { name: 'description', content: 'Professional catering service in Kathmandu, Nepal. Authentic Nepali cuisine for weddings, corporate events, birthday parties and social gatherings. From NRS 399/person. Book via WhatsApp.' },
     { name: 'keywords', content: 'catering service Kathmandu, wedding catering Nepal, event catering Kathmandu, food catering Nepal, Nepali catering, catering company Kathmandu, खानपान सेवा काठमाडौं' },
-    { property: 'og:title', content: 'Swad Catering — Best Catering Service in Kathmandu, Nepal' },
+    { property: 'og:title', content: 'Daiko Catering — Best Catering Service in Kathmandu, Nepal' },
     { property: 'og:description', content: 'Authentic Nepali cuisine for weddings, corporate events and celebrations. From NRS 399/person. Serving Kathmandu Valley.' },
     { property: 'og:type', content: 'website' },
     { name: 'geo.region', content: 'NP-BA' },
@@ -22,7 +22,7 @@ useHead({
       children: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'FoodEstablishment',
-        name: 'Swad Catering',
+        name: 'Daiko Catering',
         description: 'Professional catering service in Kathmandu, Nepal specialising in authentic Nepali cuisine for weddings, corporate events, and celebrations.',
         address: {
           '@type': 'PostalAddress',
@@ -273,7 +273,7 @@ useHead({
 
           <div class="review-card review-highlight">
             <div class="stars">★★★★★</div>
-            <p>"We used Swad Catering for our company's annual day event — 200+ employees. The team was incredibly organised, the buffet was diverse and delicious, and they cleaned everything up perfectly. Highly recommend for corporate events."</p>
+            <p>"We used Daiko Catering for our company's annual day event — 200+ employees. The team was incredibly organised, the buffet was diverse and delicious, and they cleaned everything up perfectly. Highly recommend for corporate events."</p>
             <div class="reviewer">
               <div class="reviewer-avatar">RP</div>
               <div>

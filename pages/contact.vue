@@ -37,11 +37,11 @@ const openFaq = ref<number | null>(null)
 function toggleFaq(i: number) { openFaq.value = openFaq.value === i ? null : i }
 
 useHead({
-  title: 'Contact & Booking — Swad Catering Kathmandu',
+  title: 'Contact & Booking — Daiko Catering Kathmandu',
   meta: [
-    { name: 'description', content: 'Book Swad Catering in Kathmandu via WhatsApp. Professional catering for weddings, corporate events, and parties across the Kathmandu Valley. Get a free quote today.' },
+    { name: 'description', content: 'Book Daiko Catering in Kathmandu via WhatsApp. Professional catering for weddings, corporate events, and parties across the Kathmandu Valley. Get a free quote today.' },
     { name: 'keywords', content: 'book catering Kathmandu, catering booking Nepal, wedding catering contact, catering WhatsApp Nepal' },
-    { property: 'og:title', content: 'Contact & Book — Swad Catering Kathmandu' },
+    { property: 'og:title', content: 'Contact & Book — Daiko Catering Kathmandu' },
     { property: 'og:description', content: 'Book catering for your Kathmandu event via WhatsApp. Free quote, fast response.' },
   ],
 })

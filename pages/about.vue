@@ -3,10 +3,10 @@ const WHATSAPP_NUMBER = '977980000000'
 const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hello! I would like to know more about your catering service.')}`
 
 useHead({
-  title: 'About Us — Swad Catering Kathmandu',
+  title: 'About Us — Daiko Catering Kathmandu',
   meta: [
-    { name: 'description', content: 'Learn about Swad Catering — Kathmandu\'s trusted catering service. Professional chefs, authentic Nepali cuisine, serving weddings and events across the Kathmandu Valley for over 8 years.' },
-    { property: 'og:title', content: 'About Swad Catering — Kathmandu\'s Trusted Catering Service' },
+    { name: 'description', content: 'Learn about Daiko Catering — Kathmandu\'s trusted catering service. Professional chefs, authentic Nepali cuisine, serving weddings and events across the Kathmandu Valley for over 8 years.' },
+    { property: 'og:title', content: 'About Daiko Catering — Kathmandu\'s Trusted Catering Service' },
     { property: 'og:description', content: 'Professional catering with authentic Nepali cuisine, serving Kathmandu Valley for 8+ years.' },
   ],
 })
@@ -21,7 +21,7 @@ useHead({
         <span class="badge">About Us</span>
         <h1>Food Made with <span class="accent">Heart</span></h1>
         <p>
-          Born in Kathmandu's rich culinary tradition, Swad Catering has been bringing authentic Nepali
+          Born in Kathmandu's rich culinary tradition, Daiko Catering has been bringing authentic Nepali
           flavours and professional service to weddings, corporate events, and celebrations for over 8 years.
         </p>
       </div>
@@ -35,7 +35,7 @@ useHead({
             <div class="section-label">Our Story</div>
             <h2 class="section-heading">From a family kitchen to Kathmandu's most trusted caterers</h2>
             <p>
-              Swad Catering started with a simple belief: great food brings people together. What began as a small
+              Daiko Catering started with a simple belief: great food brings people together. What began as a small
               family catering operation in Kathmandu grew into a full-service catering company trusted by hundreds
               of families, businesses, and organisations across the Kathmandu Valley.
             </p>

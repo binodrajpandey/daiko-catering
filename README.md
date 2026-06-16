@@ -1,6 +1,4 @@
-# Swad Catering — Website
-
-> **Placeholder name.** Replace "Swad Catering" with your registered business name before launch.
+# Daiko Catering — Website
 
 A static site (SSG) for a professional catering service based in Kathmandu, Nepal. Built with Nuxt 3 and optimised for local SEO.
 
@@ -37,7 +35,7 @@ npx serve .output/public
 ## Project Structure
 
 ```
-swad-catering/
+daiko-catering/
 ├── pages/
 │   ├── index.vue       # Home — hero, event types, why us, testimonials
 │   ├── menu.vue        # Packages & pricing — full/half catering toggle
@@ -81,17 +79,7 @@ pages/about.vue
 pages/contact.vue
 ```
 
-### 2. Business name
-Replace `Swad Catering` with your registered business name in:
-
-```
-components/TheNav.vue
-components/TheFooter.vue
-pages/index.vue       ← also in the JSON-LD structured data
-nuxt.config.ts        ← if you add a global site name
-```
-
-### 3. Real photos
+### 2. Real photos
 In `pages/gallery.vue`, each `.gallery-img` div is a coloured gradient placeholder. Replace with real `<img>` tags:
 
 ```html
@@ -108,7 +96,7 @@ Name photos descriptively for SEO: `wedding-catering-kathmandu-01.jpg`, `corpora
 In `pages/contact.vue`, replace the placeholder address with your actual Kathmandu address.
 
 ### 5. Sitemap & robots.txt domain
-Replace `https://swadcatering.com.np` with your actual domain in:
+Replace `https://daikocatering.com.np` with your actual domain in:
 
 ```
 public/sitemap.xml

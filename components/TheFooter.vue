@@ -15,7 +15,7 @@ const year = new Date().getFullYear()
             <path d="M18 14c0 0-4 3-4 6a4 4 0 0 0 8 0c0-3-4-6-4-6z" fill="#f97316" opacity="0.4"/>
           </svg>
           <!-- TODO: Replace with your actual business name -->
-          <span>Swad Catering</span>
+          <span>Daiko Catering</span>
         </NuxtLink>
         <p class="footer-desc">
           Professional catering service in Kathmandu, Nepal. Authentic Nepali cuisine
@@ -53,7 +53,7 @@ const year = new Date().getFullYear()
     </div>
 
     <div class="footer-bar">
-      <span>© {{ year }} Swad Catering. All rights reserved.</span>
+      <span>© {{ year }} Daiko Catering. All rights reserved.</span>
       <span>Made with care in Kathmandu, Nepal 🇳🇵</span>
     </div>
   </footer>
