@@ -43,7 +43,9 @@ useHead({
     { name: 'keywords', content: 'book catering Kathmandu, catering booking Nepal, wedding catering contact, catering WhatsApp Nepal' },
     { property: 'og:title', content: 'Contact & Book — Daiko Catering Kathmandu' },
     { property: 'og:description', content: 'Book catering for your Kathmandu event via WhatsApp. Free quote, fast response.' },
+    { property: 'og:url', content: 'https://daikocatering.com.np/contact' },
   ],
+  link: [{ rel: 'canonical', href: 'https://daikocatering.com.np/contact' }],
 })
 </script>
 

@@ -8,7 +8,9 @@ useHead({
     { name: 'description', content: 'Learn about Daiko Catering — Kathmandu\'s trusted catering service. Professional chefs, authentic Nepali cuisine, serving weddings and events across the Kathmandu Valley for over 8 years.' },
     { property: 'og:title', content: 'About Daiko Catering — Kathmandu\'s Trusted Catering Service' },
     { property: 'og:description', content: 'Professional catering with authentic Nepali cuisine, serving Kathmandu Valley for 8+ years.' },
+    { property: 'og:url', content: 'https://daikocatering.com.np/about' },
   ],
+  link: [{ rel: 'canonical', href: 'https://daikocatering.com.np/about' }],
 })
 </script>
 

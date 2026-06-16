@@ -30,7 +30,9 @@ useHead({
     { name: 'description', content: 'See our catering work in Kathmandu — weddings, corporate events, birthday parties, and social ceremonies. Professional catering across the Kathmandu Valley.' },
     { property: 'og:title', content: 'Gallery — Daiko Catering Kathmandu' },
     { property: 'og:description', content: 'View our event catering gallery from Kathmandu. Weddings, corporate events, parties and more.' },
+    { property: 'og:url', content: 'https://daikocatering.com.np/gallery' },
   ],
+  link: [{ rel: 'canonical', href: 'https://daikocatering.com.np/gallery' }],
 })
 </script>
 

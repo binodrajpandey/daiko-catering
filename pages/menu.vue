@@ -33,7 +33,9 @@ useHead({
     { name: 'keywords', content: 'catering packages Kathmandu, wedding catering menu Nepal, catering price Nepal, catering cost Kathmandu, dal bhat catering, buffet catering Nepal' },
     { property: 'og:title', content: 'Menu & Catering Packages — Daiko Catering Kathmandu' },
     { property: 'og:description', content: 'Full & half catering packages from NRS 399/person. Authentic Nepali cuisine for any event in Kathmandu.' },
+    { property: 'og:url', content: 'https://daikocatering.com.np/menu' },
   ],
+  link: [{ rel: 'canonical', href: 'https://daikocatering.com.np/menu' }],
 })
 </script>
 

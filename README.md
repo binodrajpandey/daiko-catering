@@ -95,15 +95,8 @@ Name photos descriptively for SEO: `wedding-catering-kathmandu-01.jpg`, `corpora
 ### 4. Business address
 In `pages/contact.vue`, replace the placeholder address with your actual Kathmandu address.
 
-### 5. Sitemap & robots.txt domain
-Replace `https://daikocatering.com.np` with your actual domain in:
-
-```
-public/sitemap.xml
-public/robots.txt
-```
-
-Also update the `og:url` and canonical URLs in page `useHead()` calls once you have the domain.
+### 5. Sitemap & domain
+Domain is set to `https://daikocatering.com.np` in `public/sitemap.xml`, `public/robots.txt`, and all page canonical/og:url tags. Update these if the domain ever changes.
 
 ### 6. Team section
 In `pages/about.vue`, replace the placeholder initials and descriptions with real names, photos, and bios.

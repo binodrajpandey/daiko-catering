@@ -13,9 +13,11 @@ useHead({
     { property: 'og:title', content: 'Daiko Catering — Best Catering Service in Kathmandu, Nepal' },
     { property: 'og:description', content: 'Authentic Nepali cuisine for weddings, corporate events and celebrations. From NRS 399/person. Serving Kathmandu Valley.' },
     { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://daikocatering.com.np/' },
     { name: 'geo.region', content: 'NP-BA' },
     { name: 'geo.placename', content: 'Kathmandu' },
   ],
+  link: [{ rel: 'canonical', href: 'https://daikocatering.com.np/' }],
   script: [
     {
       type: 'application/ld+json',
@@ -30,6 +32,7 @@ useHead({
           addressRegion: 'Bagmati',
           addressCountry: 'NP',
         },
+        url: 'https://daikocatering.com.np',
         telephone: '+977-98XXXXXXXX',
         servesCuisine: ['Nepali', 'Indian', 'Continental'],
         priceRange: 'NRS 399 - NRS 699 per person',
